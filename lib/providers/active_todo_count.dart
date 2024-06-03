@@ -29,23 +29,17 @@ class ActiveTodoCountState extends Equatable {
   }
 }
 
-class ActiveTodoCount with ChangeNotifier {
-  // ActiveTodoCountState _state = ActiveTodoCountState.initial();
-  late ActiveTodoCountState _state;
-  int initialActiveTodoCount;
-  ActiveTodoCount({required this.initialActiveTodoCount,}){
-    _state = ActiveTodoCountState(activeTodoCount: initialActiveTodoCount);
-  }
-  ActiveTodoCountState get state => _state;
-
-  void update(TodoList todoList) {
-    final newActiveTodoCount = todoList.state.todos
-        .where((Todo todo) => !todo.completed)
-        .toList()
-        .length;
-    _state = _state.copyWith(
-      activeTodoCount: newActiveTodoCount,
-    );
-    notifyListeners();
-  }
+class ActiveTodoCount {
+  final TodoList todoList;
+  ActiveTodoCount({
+    required this.todoList,
+  });
+  ActiveTodoCountState get state => ActiveTodoCountState(
+        activeTodoCount: todoList.state.todos
+            .where(
+              (Todo todo) => !todo.completed,
+            )
+            .toList()
+            .length,
+      );
 }

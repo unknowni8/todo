@@ -53,7 +53,7 @@ class TodoHeader extends StatelessWidget {
           style: Theme.of(context).textTheme.titleLarge,
         ),
         Text(
-          "${context.watch<ActiveTodoCount>().state.activeTodoCount} items left",
+          "${context.watch<ActiveTodoCountState>().activeTodoCount} items left",
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: Colors.redAccent,
               ),
@@ -99,7 +99,9 @@ class _CreateTodoState extends State<CreateTodo> {
 class SearchAndFilterTodo extends StatelessWidget {
   SearchAndFilterTodo({super.key});
 
-  final debounce = Debounce(milliseconds: 1000,);
+  final debounce = Debounce(
+    milliseconds: 1000,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +162,7 @@ class SearchAndFilterTodo extends StatelessWidget {
   }
 
   Color textColor(BuildContext context, Filter filter) {
-    final currentFilter = context.watch<TodoFilter>().state.filter;
+    final currentFilter = context.watch<TodoFilterState>().filter;
     return currentFilter == filter ? Colors.blue : Colors.grey;
   }
 }
@@ -170,7 +172,7 @@ class ShowTodos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final todos = context.watch<FilteredTodos>().state.filteredTodos;
+    final todos = context.watch<FilteredTodosState>().filteredTodos;
     return ListView.separated(
       itemCount: todos.length,
       separatorBuilder: (context, index) => const Divider(
@@ -294,11 +296,14 @@ class _TodoItemState extends State<TodoItem> {
                     ),
                     TextButton(
                       onPressed: () {
-                        setState((){
+                        setState(() {
                           error = _textController.text.isEmpty ? true : false;
                         });
-                        if(!error){
-                          context.read<TodoList>().editTodo(widget.item.id, _textController.text,);
+                        if (!error) {
+                          context.read<TodoList>().editTodo(
+                                widget.item.id,
+                                _textController.text,
+                              );
                           Navigator.pop(context);
                         }
                       },

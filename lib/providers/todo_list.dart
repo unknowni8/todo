@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:state_notifier/state_notifier.dart';
 
 import '../models/todo_model.dart';
 
@@ -12,25 +12,12 @@ class TodoListState extends Equatable {
 
   factory TodoListState.initial() {
     return const TodoListState(
-      todos: [
-        // Todo(
-        //   id: '1',
-        //   desc: 'Clean the room',
-        // ),
-        // Todo(
-        //   id: '2',
-        //   desc: 'Wash the dish',
-        // ),
-        // Todo(
-        //   id: '3',
-        //   desc: 'Do homework',
-        // ),
-      ],
+      todos: [],
     );
   }
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [todos];
 
   @override
   bool get stringify => true;
@@ -44,19 +31,17 @@ class TodoListState extends Equatable {
   }
 }
 
-class TodoList with ChangeNotifier {
-  TodoListState _state = TodoListState.initial();
-  TodoListState get state => _state;
+class TodoList extends StateNotifier<TodoListState> {
+  TodoList() : super(TodoListState.initial());
 
   void addTodo(String desc) {
     final newTodo = Todo(desc: desc);
-    final newTodos = [..._state.todos, newTodo];
-    _state = _state.copyWith(todos: newTodos);
-    notifyListeners();
+    final newTodos = [...state.todos, newTodo];
+    state = state.copyWith(todos: newTodos);
   }
 
   void editTodo(String id, String todoDesc) {
-    final newTodos = _state.todos.map((Todo todo) {
+    final newTodos = state.todos.map((Todo todo) {
       if (todo.id == id) {
         return Todo(
           id: id,
@@ -66,14 +51,13 @@ class TodoList with ChangeNotifier {
       }
       return todo;
     }).toList();
-    _state = _state.copyWith(
+    state = state.copyWith(
       todos: newTodos,
     );
-    notifyListeners();
   }
 
   void toggleTodo(String id) {
-    final newTodos = _state.todos.map((Todo todo) {
+    final newTodos = state.todos.map((Todo todo) {
       if (todo.id == id) {
         return Todo(
           id: id,
@@ -83,21 +67,19 @@ class TodoList with ChangeNotifier {
       }
       return todo;
     }).toList();
-    _state = _state.copyWith(
+    state = state.copyWith(
       todos: newTodos,
     );
-    notifyListeners();
   }
 
   void deleteTodo(String id) {
-    final newTodos = _state.todos
+    final newTodos = state.todos
         .where(
           (Todo todo) => todo.id != id,
         )
         .toList();
-    _state = _state.copyWith(
+    state = state.copyWith(
       todos: newTodos,
     );
-    notifyListeners();
   }
 }

@@ -12,25 +12,12 @@ class TodoListState extends Equatable {
 
   factory TodoListState.initial() {
     return const TodoListState(
-      todos: [
-        // Todo(
-        //   id: '1',
-        //   desc: 'Clean the room',
-        // ),
-        // Todo(
-        //   id: '2',
-        //   desc: 'Wash the dish',
-        // ),
-        // Todo(
-        //   id: '3',
-        //   desc: 'Do homework',
-        // ),
-      ],
+      todos: [],
     );
   }
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [todos];
 
   @override
   bool get stringify => true;

@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Todo',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           useMaterial3: true,
